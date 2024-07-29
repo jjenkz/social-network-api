@@ -1,17 +1,27 @@
-const { Schema, model } = require("mongoose");
+const { Schema, Model } = require("mongoose");
 
 // Schema to create User model
 const userSchema = new Schema(
   {
-    first: String,
-    last: String,
-    email: String,
-    friends: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "friend",
-      },
-    ],
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      requried: true,
+      unique: true,
+    },
+    thoughts: {
+      type: Schema.Types.ObjectId,
+      ref: "Thought",
+    },
+    friends: {
+      type: Schema.Types.ObjectId,
+      ref: "Friend",
+    },
   },
   {
     toJSON: {
@@ -21,14 +31,7 @@ const userSchema = new Schema(
   }
 );
 
-// Create a virtual proerty "fullName" that gets and sets the user's full name
-userSchema.virtual("fullName").get(function () {
-  const first = v.split(" ")[0];
-  const last = v.split(" ");
-  this.set({ first, last });
-});
-
 // Initialize User model
-const User = model("user", userSchema);
+const User = Model("User", userSchema);
 
 module.exports = User;

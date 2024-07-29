@@ -10,7 +10,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // get a single user by id
+  // get a single user by Id
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId });
@@ -33,4 +33,11 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  // update a user by Id
+
+  // delete a user by Id
+
+  // add a new friend to their friends array
+
+  // delete a friend from their friends array
 };
