@@ -1,15 +1,18 @@
-const Thought = require("../models/Thought");
+const { Thought, User } = require("../models");
 
-// get all thoughts
-
-// get a single thought by Id
-
-// create a new thought
-
-// update a thought by Id
-
-// delete a thought by Id
-
-// create a reaction and store in thoughts array
-
-// delete a reaction by unique Id
+module.exports = {
+  // get all thoughts
+  async getThoughts(req, res) {},
+  // get a single thought by Id
+  async getSingleThought(req, res) {},
+  // create a new thought
+  async createThought(req, res) {},
+  // update a thought by Id
+  async updateThought(req, res) {},
+  // delete a thought by Id
+  async deleteThought(req, res) {},
+  // create a reaction and store in thoughts array
+  async createReaction(req, res) {},
+  // delete a reaction by unique Id
+  async deleteReaction(req, res) {},
+};
