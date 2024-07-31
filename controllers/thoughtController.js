@@ -33,13 +33,13 @@ module.exports = {
   async createThought(req, res) {
     try {
       const thought = await Thought.create(req.body);
-      const user = await User.findOneAndUpdate(
-        { _id: req.body.userId },
-        { $addToSet: { thoughts: thought._id } },
-        { new: true }
-      );
+      // const user = await User.findOneAndUpdate(
+      //   { _id: req.body.userId },
+      //   { $addToSet: { thoughts: thought._id } },
+      //   { new: true }
+      // );
 
-      if (!user) {
+      if (!thought) {
         return res.status(404)({
           message: "Thought created but no user found with that ID",
         });
