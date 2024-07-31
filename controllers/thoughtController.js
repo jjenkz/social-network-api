@@ -2,6 +2,7 @@ const { Thought, User } = require("../models");
 
 module.exports = {
   // get all thoughts
+  // http://localhost:3001/api/thoughts
   async getThoughts(req, res) {
     try {
       const thoughts = await Thought.find();
@@ -11,6 +12,7 @@ module.exports = {
     }
   },
   // get a single thought by Id
+  // http://localhost:3001/api/thoughts/:thoughtId
   async getSingleThought(req, res) {
     try {
       const thought = await Thought.findOne({ _id: req.params.thoughtId });
@@ -27,6 +29,7 @@ module.exports = {
     }
   },
   // create a new thought
+  // http://localhost:3001/api/thoughts
   async createThought(req, res) {
     try {
       const thought = await Thought.create(req.body);
@@ -49,6 +52,7 @@ module.exports = {
     }
   },
   // update a thought by Id
+  // http://localhost:3001/api/thoughts/:thoughtId
   async updateThought(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(
@@ -70,9 +74,10 @@ module.exports = {
     }
   },
   // delete a thought by Id
+  // http://localhost:3001/api/thoughts/:thoughtId
   async deleteThought(req, res) {
     try {
-      const thought = await Thought.findOneAndRemove({
+      const thought = await Thought.findOneAndDelete({
         _id: req.params.thoughtId,
       });
 
@@ -82,17 +87,17 @@ module.exports = {
           .json({ message: "No thought found with that ID" });
       }
 
-      const user = await User.findOneAndUpdate(
-        { thoughts: req.params.thoughtId },
-        { $pull: { thoughts: req.params.thoughtId } },
-        { new: true }
-      );
+      // const user = await User.findOneAndUpdate(
+      //   { thoughts: req.params.thoughtId },
+      //   { $pull: { thoughts: req.params.thoughtId } },
+      //   { new: true }
+      // );
 
-      if (!user) {
-        return res
-          .status(404)
-          .json({ message: "Video deleted but no user found with this iD" });
-      }
+      // if (!user) {
+      //   return res
+      //     .status(404)
+      //     .json({ message: "Thought deleted but no user found with this iD" });
+      // }
 
       res.json({ message: "Thought successfuly deleted" });
     } catch (err) {
@@ -100,9 +105,10 @@ module.exports = {
     }
   },
   // create a reaction and store in thoughts array
+  // http://localhost:3001/api/thoughts/:thoughtId/reactions
   async createReaction(req, res) {
     try {
-      const thought = await Thought.findOneAndUpdate(
+      const thought = await Thought.findByIdAndUpdate(
         { _id: req.params.thoughtId },
         { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true }
@@ -120,6 +126,7 @@ module.exports = {
     }
   },
   // delete a reaction by unique Id
+  // http://localhost:3001/api/thoughts/:thoughtId/reactions
   async deleteReaction(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(

@@ -1,4 +1,6 @@
-const { Schema, Model } = require("mongoose");
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
 const Reaction = require("./Reaction");
 
 // Schema to create thought model
@@ -36,6 +38,6 @@ thoughtSchema
   });
 
 // Initialize thought model
-const Thought = Model("Thought", thoughtSchema);
+const Thought = mongoose.model("Thought", thoughtSchema);
 
 module.exports = Thought;

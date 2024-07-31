@@ -2,6 +2,7 @@ const User = require("../models/User");
 
 module.exports = {
   // get all users
+  // https:localhost:3001/api/users
   async getUsers(req, res) {
     try {
       const users = await User.find();
@@ -11,6 +12,7 @@ module.exports = {
     }
   },
   // get a single user by Id
+  // http://localhost:3001/api/users/:userId
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId });
@@ -19,12 +21,13 @@ module.exports = {
         return res.status(404).json({ message: "No user found with that ID" });
       }
 
-      re.json(user);
+      res.json(user);
     } catch (err) {
       res.status(500).json(err);
     }
   },
   // create a user
+  // http://localhost:3001/api/users
   async createUser(req, res) {
     try {
       const dbUserData = await User.create(req.body);
@@ -34,6 +37,7 @@ module.exports = {
     }
   },
   // update a user by Id
+  // http://localhost:3001/api/users/:userId
   async updateUser(req, res) {
     try {
       const user = await User.findOneAndUpdate(
@@ -53,19 +57,21 @@ module.exports = {
     }
   },
   // delete a user by Id
+  // http://localhost:3001/api/users/:userId
   async deleteUser(req, res) {
     try {
-      const user = await User.findOneAndRemove({ _id: req.params.userId });
+      const user = await User.findOneAndDelete({ _id: req.params.userId });
 
       if (!user) {
         return res.status(404).json({ message: "No user found with that ID" });
       }
-      res.json({ message: "User successfully deleted" });
+      res.json({ message: "User successfully deleted from existence" });
     } catch (err) {
       res.status(500).json(err);
     }
   },
   // add a new friend to their friends array
+  // http://localhost:3001/api/users/:userId/friends/:friendId
   async addFriend(req, res) {
     try {
       const user = await User.findOneAndUpdate(
@@ -84,9 +90,10 @@ module.exports = {
     }
   },
   // delete a friend from their friends array
+  // http://localhost:3001/api/users/:userId/friends/:friendId
   async deleteFriend(req, res) {
     try {
-      const user = await User.findOneAndRemove(
+      const user = await User.findOneAndDelete(
         { _id: req.params.userId },
         { $pull: { friends: { friendId: req.params.friendId } } },
         { runValidators: true, new: true }
